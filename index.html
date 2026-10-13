@@ -1,11 +1,39 @@
-<form id="form-habito">
-    <h2>Crear Hábito</h2>
-    <input type="text" id="habito-nombre" placeholder="Nombre" required>
-    <input type="text" id="habito-desc" placeholder="Descripción">
-    <select id="habito-cat">
-        <option value="Salud">Salud</option>
-        <option value="Estudio">Estudio</option>
-        <option value="Ocio">Ocio</option>
-    </select>
-    <button type="submit">Crear</button>
-</form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>HábitoTracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- FORMULARIO FASE 2 -->
+    <form id="form-habito">
+        <h2>Crear Hábito</h2>
+        <input type="text" id="habito-nombre" placeholder="Nombre" required>
+        <input type="text" id="habito-desc" placeholder="Descripción">
+        <select id="habito-cat">
+            <option value="Salud">Salud</option>
+            <option value="Estudio">Estudio</option>
+            <option value="Ocio">Ocio</option>
+        </select>
+        <button type="submit">Crear</button>
+    </form>
+
+    <hr> <!-- Una línea separadora para que quede más limpio -->
+
+    <!-- FORMULARIO FASE 3 -->
+    <form id="form-registro">
+        <h2>Registrar Día</h2>
+        <select id="reg-habitoId" required>
+            <!-- Las opciones se generarán por JS -->
+        </select>
+        <input type="date" id="reg-fecha" required>
+        <input type="text" id="reg-obs" placeholder="Observaciones">
+        <label><input type="checkbox" id="reg-cumplido"> ¿Cumplido?</label>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <script src="main.js"></script>
+</body>
+</html>

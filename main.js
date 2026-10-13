@@ -1,22 +1,95 @@
+// --- FASE 1: PERSISTENCIA ---
+let habitos = leerCookie('habitos') || [];
+let registros = leerCookie('registros') || [];
+
+function guardarCookie(nombre, datos) {
+    const jsonStr = encodeURIComponent(JSON.stringify(datos));
+    document.cookie = `${nombre}=${jsonStr}; max-age=31536000; path=/`;
+}
+
+function leerCookie(nombre) {
+    const cookies = document.cookie.split('; ');
+    for (let c of cookies) {
+        const [key, value] = c.split('=');
+        if (key === nombre) {
+            try {
+                return JSON.parse(decodeURIComponent(value));
+            } catch (error) {
+                return [];
+            }
+        }
+    }
+    return [];
+}
+
+function guardarTodo() {
+    guardarCookie('habitos', habitos);
+    guardarCookie('registros', registros);
+}
+
+
+// --- FASE 2: CREAR HÁBITOS ---
 document.getElementById('form-habito').addEventListener('submit', function(e) {
-    e.preventDefault(); // Evita que la página se recargue al enviar el formulario
-    
+    e.preventDefault();
     const nombre = document.getElementById('habito-nombre').value.trim();
     if (!nombre) return alert("El nombre no puede estar vacío");
 
     const nuevoHabito = {
-        id: Date.now().toString(), // Usamos la fecha en milisegundos como ID único
+        id: Date.now().toString(),
         nombre: nombre,
         descripcion: document.getElementById('habito-desc').value,
         categoria: document.getElementById('habito-cat').value
     };
 
-    habitos.push(nuevoHabito); // Añadimos el hábito al array
-    guardarTodo(); // Guardamos los arrays actualizados en las cookies
+    habitos.push(nuevoHabito);
+    guardarTodo();
     
-    // Si la función de actualizar el desplegable ya existe (Fase 3), la llamamos
+    // Actualizamos el desplegable de la fase 3 al crear uno nuevo
     if(typeof actualizarDesplegable === 'function') actualizarDesplegable(); 
     
-    this.reset(); // Limpia los campos del formulario
+    this.reset();
     alert("Hábito creado correctamente");
 });
+
+
+// --- FASE 3: REGISTRAR DÍAS ---
+function actualizarDesplegable() {
+    const select = document.getElementById('reg-habitoId');
+    select.innerHTML = '<option value="">Selecciona un hábito...</option>';
+    
+    habitos.forEach(h => {
+        const option = document.createElement('option');
+        option.value = h.id;
+        option.textContent = h.nombre;
+        select.appendChild(option);
+    });
+}
+
+document.getElementById('form-registro').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const habitoId = document.getElementById('reg-habitoId').value;
+    const fecha = document.getElementById('reg-fecha').value;
+
+    if (!habitoId || !fecha) return alert("Falta seleccionar el hábito o la fecha");
+
+    const nuevoRegistro = {
+        id: Date.now().toString(),
+        habitoId: habitoId,
+        fecha: fecha,
+        observaciones: document.getElementById('reg-obs').value,
+        cumplido: document.getElementById('reg-cumplido').checked
+    };
+
+    registros.push(nuevoRegistro);
+    guardarTodo();
+    
+    if(typeof renderizarTabla === 'function') renderizarTabla();
+    if(typeof actualizarEstadisticas === 'function') actualizarEstadisticas();
+    
+    this.reset();
+    alert("Registro guardado correctamente");
+});
+
+// Llamada inicial
+actualizarDesplegable();
