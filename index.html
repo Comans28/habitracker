@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- MENÚ -->
+    <!-- FASE 4: MENÚ -->
     <nav id="menu">
         <a href="#" id="link-inicio">Inicio</a>
         <a href="#" id="link-seguimiento">Ver seguimiento</a>
     </nav>
 
-    <!-- FORMULARIO FASE 2 -->
+    <!-- FASE 2: FORMULARIO CREAR HÁBITO -->
     <form id="form-habito">
         <h2>Crear Hábito</h2>
         <input type="text" id="habito-nombre" placeholder="Nombre" required>
@@ -27,7 +27,16 @@
 
     <hr>
 
-    <!-- FORMULARIO FASE 3 -->
+    <!-- FASE 6: ESTADÍSTICAS -->
+    <div id="estadisticas" style="background: #f4f4f9; padding: 15px; margin-bottom: 20px; border-left: 4px solid #333;">
+        <h3 style="margin-top: 0;">📊 Resumen de seguimiento</h3>
+        <p>Total Hábitos: <strong id="stat-habitos">0</strong></p>
+        <p>Días Cumplidos: <strong id="stat-cumplidos">0</strong></p>
+        <p>Días Fallados: <strong id="stat-fallados">0</strong></p>
+        <button id="btn-borrar" style="background: #ff4c4c; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px; margin-top: 10px;">Borrar todos los datos</button>
+    </div>
+
+    <!-- FASE 3: FORMULARIO REGISTRAR DÍA -->
     <form id="form-registro">
         <h2>Registrar Día</h2>
         <select id="reg-habitoId" required>
@@ -39,7 +48,7 @@
         <button type="submit">Registrar</button>
     </form>
 
-    <!-- MODAL FASE 4 -->
+    <!-- FASE 4: MODAL CON LA TABLA -->
     <div id="mi-modal" class="modal oculto">
         <div class="modal-contenido">
             <span class="cerrar">&times;</span>
@@ -55,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Filas que se pintarán luego -->
+                    <!-- Filas generadas por JS -->
                 </tbody>
             </table>
         </div>

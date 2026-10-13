@@ -44,6 +44,7 @@ document.getElementById('form-habito').addEventListener('submit', function(e) {
     guardarTodo();
     
     actualizarDesplegable(); 
+    actualizarEstadisticas();
     
     this.reset();
     alert("Hábito creado correctamente");
@@ -82,22 +83,19 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
     registros.push(nuevoRegistro);
     guardarTodo();
     
-    if(typeof renderizarTabla === 'function') renderizarTabla();
-    if(typeof actualizarEstadisticas === 'function') actualizarEstadisticas();
+    renderizarTabla();
+    actualizarEstadisticas();
     
     this.reset();
     alert("Registro guardado correctamente");
 });
-
-// Llamamos a esta función al arrancar la página
-actualizarDesplegable();
 
 // --- FASE 4: MENÚ Y MODAL ---
 const modal = document.getElementById('mi-modal');
 
 document.getElementById('link-seguimiento').addEventListener('click', function(e) {
     e.preventDefault();
-    if(typeof renderizarTabla === 'function') renderizarTabla();
+    renderizarTabla();
     modal.classList.remove('oculto');
 });
 
@@ -142,6 +140,40 @@ window.toggleCumplido = function(id) {
         registro.cumplido = !registro.cumplido; 
         guardarTodo(); 
         renderizarTabla(); 
-        if(typeof actualizarEstadisticas === 'function') actualizarEstadisticas();
+        actualizarEstadisticas();
     }
 };
+
+// --- FASE 6: ESTADÍSTICAS Y BORRADO ---
+function actualizarEstadisticas() {
+    const statHabitos = document.getElementById('stat-habitos');
+    if(statHabitos) statHabitos.textContent = habitos.length;
+    
+    const cumplidos = registros.filter(r => r.cumplido).length;
+    const fallados = registros.length - cumplidos;
+    
+    const statCumplidos = document.getElementById('stat-cumplidos');
+    const statFallados = document.getElementById('stat-fallados');
+    
+    if(statCumplidos) statCumplidos.textContent = cumplidos;
+    if(statFallados) statFallados.textContent = fallados;
+}
+
+document.getElementById('btn-borrar').addEventListener('click', function() {
+    if (confirm("¿Seguro que quieres borrar TODOS los datos? Esto no se puede deshacer.")) {
+        habitos = [];
+        registros = [];
+        
+        document.cookie = "habitos=; max-age=0; path=/";
+        document.cookie = "registros=; max-age=0; path=/";
+        
+        actualizarDesplegable();
+        renderizarTabla();
+        actualizarEstadisticas();
+    }
+});
+
+// --- INICIALIZACIÓN ---
+// Llamadas al cargar la página para que la interfaz muestre los datos guardados
+actualizarDesplegable();
+actualizarEstadisticas();
