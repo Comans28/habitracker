@@ -27,7 +27,6 @@ function guardarTodo() {
     guardarCookie('registros', registros);
 }
 
-
 // --- FASE 2: CREAR HÁBITOS ---
 document.getElementById('form-habito').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -44,12 +43,11 @@ document.getElementById('form-habito').addEventListener('submit', function(e) {
     habitos.push(nuevoHabito);
     guardarTodo();
     
-    if(typeof actualizarDesplegable === 'function') actualizarDesplegable(); 
+    actualizarDesplegable(); 
     
     this.reset();
     alert("Hábito creado correctamente");
 });
-
 
 // --- FASE 3: REGISTRAR DÍAS ---
 function actualizarDesplegable() {
@@ -91,8 +89,8 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
     alert("Registro guardado correctamente");
 });
 
+// Llamamos a esta función al arrancar la página
 actualizarDesplegable();
-
 
 // --- FASE 4: MENÚ Y MODAL ---
 const modal = document.getElementById('mi-modal');
@@ -112,3 +110,38 @@ modal.addEventListener('click', function(e) {
         modal.classList.add('oculto');
     }
 });
+
+// --- FASE 5: RENDERIZAR TABLA Y CAMBIAR ESTADO ---
+function renderizarTabla() {
+    const tbody = document.querySelector('#tabla-registros tbody');
+    if (!tbody) return;
+    tbody.innerHTML = ''; 
+
+    registros.forEach(reg => {
+        const habitoVinculado = habitos.find(h => h.id === reg.habitoId);
+        const nombreHabito = habitoVinculado ? habitoVinculado.nombre : 'Desconocido';
+        
+        const estadoTexto = reg.cumplido ? '✓ Cumplido' : '✗ Fallado';
+        const colorTexto = reg.cumplido ? 'green' : 'red';
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${nombreHabito}</td>
+            <td>${reg.fecha}</td>
+            <td>${reg.observaciones}</td>
+            <td style="color: ${colorTexto}; font-weight: bold;">${estadoTexto}</td>
+            <td><button onclick="toggleCumplido('${reg.id}')">Cambiar</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+window.toggleCumplido = function(id) {
+    const registro = registros.find(r => r.id === id);
+    if (registro) {
+        registro.cumplido = !registro.cumplido; 
+        guardarTodo(); 
+        renderizarTabla(); 
+        if(typeof actualizarEstadisticas === 'function') actualizarEstadisticas();
+    }
+};
