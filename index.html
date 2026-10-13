@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- MENÚ -->
+    <nav id="menu">
+        <a href="#" id="link-inicio">Inicio</a>
+        <a href="#" id="link-seguimiento">Ver seguimiento</a>
+    </nav>
 
     <!-- FORMULARIO FASE 2 -->
     <form id="form-habito">
@@ -20,7 +25,7 @@
         <button type="submit">Crear</button>
     </form>
 
-    <hr> <!-- Una línea separadora para que quede más limpio -->
+    <hr>
 
     <!-- FORMULARIO FASE 3 -->
     <form id="form-registro">
@@ -33,6 +38,28 @@
         <label><input type="checkbox" id="reg-cumplido"> ¿Cumplido?</label>
         <button type="submit">Registrar</button>
     </form>
+
+    <!-- MODAL FASE 4 -->
+    <div id="mi-modal" class="modal oculto">
+        <div class="modal-contenido">
+            <span class="cerrar">&times;</span>
+            <h2>Tabla de Seguimiento</h2>
+            <table id="tabla-registros">
+                <thead>
+                    <tr>
+                        <th>Hábito</th>
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Filas que se pintarán luego -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>

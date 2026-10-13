@@ -44,7 +44,6 @@ document.getElementById('form-habito').addEventListener('submit', function(e) {
     habitos.push(nuevoHabito);
     guardarTodo();
     
-    // Actualizamos el desplegable de la fase 3 al crear uno nuevo
     if(typeof actualizarDesplegable === 'function') actualizarDesplegable(); 
     
     this.reset();
@@ -55,6 +54,7 @@ document.getElementById('form-habito').addEventListener('submit', function(e) {
 // --- FASE 3: REGISTRAR DÍAS ---
 function actualizarDesplegable() {
     const select = document.getElementById('reg-habitoId');
+    if (!select) return;
     select.innerHTML = '<option value="">Selecciona un hábito...</option>';
     
     habitos.forEach(h => {
@@ -91,5 +91,24 @@ document.getElementById('form-registro').addEventListener('submit', function(e) 
     alert("Registro guardado correctamente");
 });
 
-// Llamada inicial
 actualizarDesplegable();
+
+
+// --- FASE 4: MENÚ Y MODAL ---
+const modal = document.getElementById('mi-modal');
+
+document.getElementById('link-seguimiento').addEventListener('click', function(e) {
+    e.preventDefault();
+    if(typeof renderizarTabla === 'function') renderizarTabla();
+    modal.classList.remove('oculto');
+});
+
+document.querySelector('.cerrar').addEventListener('click', function() {
+    modal.classList.add('oculto');
+});
+
+modal.addEventListener('click', function(e) {
+    if (e.target === this) {
+        modal.classList.add('oculto');
+    }
+});
